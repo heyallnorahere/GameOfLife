@@ -21,5 +21,3 @@ On Windows, open `GameOfLife.sln` in Visual Studio and hit `Ctrl+Shift+B` to bui
 - Left arrow: go back a frame
 - Right arrow: go forward a frame
 - Space bar: pause/resume
-
-Please note that not all of these features are implemented yet.
