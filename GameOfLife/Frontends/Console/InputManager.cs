@@ -8,15 +8,9 @@ namespace GameOfLife.Frontends.Console
         public InputManager()
         {
             mKeyStates = new();
-            foreach (var key in Enum.GetValues<Key>())
-            {
-                var keyState = new KeyState();
-                keyState.Reset();
-                mKeyStates[key] = keyState;
-            }
         }
-        public KeyState this[Key key] => GetKey(key);
-        public KeyState GetKey(Key key)
+        public bool this[Key key] => GetKey(key);
+        public bool GetKey(Key key)
         {
             return mKeyStates[key];
         }
@@ -28,23 +22,18 @@ namespace GameOfLife.Frontends.Console
                 var keyInfo = System.Console.ReadKey(true);
                 keys.Add(keyInfo.Key);
             }
-            var lastValues = mKeyStates;
             mKeyStates = new();
             foreach (var key in Enum.GetValues<Key>())
             {
-                var state = new KeyState();
-                state.Reset();
+                var state = false;
                 foreach (ConsoleKey consoleKey in keys)
                 {
                     if (key == Convert(consoleKey))
                     {
-                        state.Held = true;
+                        state = true;
                         break;
                     }
                 }
-                var lastState = lastValues[key];
-                state.Down = !lastState.Held && state.Held;
-                state.Up = lastState.Held && !state.Held;
                 mKeyStates[key] = state;
             }
         }
@@ -59,6 +48,6 @@ namespace GameOfLife.Frontends.Console
             }
             throw new InvalidCastException();
         }
-        private Dictionary<Key, KeyState> mKeyStates;
+        private Dictionary<Key, bool> mKeyStates;
     }
 }

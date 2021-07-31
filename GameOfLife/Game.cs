@@ -29,7 +29,7 @@ namespace GameOfLife
             FrameManager.NewFrame();
             var inputManager = Frontend.InputManager;
             inputManager.Update();
-            if (inputManager[Key.Q].Down)
+            if (inputManager[Key.Q])
             {
                 Quit();
             }
