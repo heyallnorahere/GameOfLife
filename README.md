@@ -21,3 +21,33 @@ On Windows, open `GameOfLife.sln` in Visual Studio and hit `Ctrl+Shift+B` to bui
 - Left arrow: go back a frame
 - Right arrow: go forward a frame
 - Space bar: pause/resume
+
+## Config file
+
+To specify a starting position among other things, create a `config.json` file in the executable's working directory. This will let you load a state on startup. For example, to create a beehive:
+```json
+{
+    "InitialState": [
+        [ 0, 1 ],
+        [ 3, 1 ],
+        [ 1, 0 ],
+        [ 2, 0 ],
+        [ 1, 2 ],
+        [ 2, 2 ]
+    ]
+}
+```
+It's also possible to specify custom rules. To create a custom rule, create a .NET assembly with a public and static `GetDelegate()` function in a class, returning a `GameOfLife.GetRuleDelegate` delegate. Then, specify the assembly in your `config.json` file:
+```json
+{
+    "InitialState": [
+        // specify some cell positions
+    ],
+    "RulesetAssemblies": [
+        {
+            "AssemblyPath": "MyRuleset.dll",
+            "Entrypoint": "MyRuleset.Entrypoint"
+        }
+    ]
+}
+```
