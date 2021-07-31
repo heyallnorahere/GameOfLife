@@ -26,6 +26,7 @@ namespace GameOfLife
         }
         private void Update()
         {
+            FrameManager.NewFrame();
             var inputManager = Frontend.InputManager;
             inputManager.Update();
             if (inputManager[Key.Q].Down)
@@ -33,7 +34,7 @@ namespace GameOfLife
                 Quit();
             }
             HashSet<Vector>? boardState = null;
-            if (!FrameManager.Paused)
+            if (FrameManager.CanUpdate && !FrameManager.Paused)
             {
                 Board.Update();
                 boardState = Board.Cells;

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using GameOfLife.Frontends;
 
 namespace GameOfLife
@@ -48,8 +49,29 @@ namespace GameOfLife
             FPS = 1;
             CurrentFrameIndex = 0;
             Paused = false;
+            CanUpdate = false;
             mFrames = new();
             mRenderScope = new RenderScope();
+            mLastUpdate = null;
+        }
+        public void NewFrame()
+        {
+            var now = DateTime.Now;
+            if (mLastUpdate == null)
+            {
+                mLastUpdate = now;
+            }
+            var frameTime = (now - (mLastUpdate ?? throw new NullReferenceException())).Ticks;
+            long frameDelay = TimeSpan.TicksPerSecond / FPS;
+            if (frameTime >= frameDelay)
+            {
+                CanUpdate = true;
+                mLastUpdate = now;
+            }
+            else
+            {
+                CanUpdate = false;
+            }
         }
         public void AddFrame(HashSet<Vector> boardState)
         {
@@ -108,8 +130,10 @@ namespace GameOfLife
         public int FPS { get; set; }
         public int CurrentFrameIndex { get; set; }
         public bool Paused { get; set; }
+        public bool CanUpdate { get; private set; }
         public RenderScope RenderScope => mRenderScope;
         private readonly List<HashSet<Vector>> mFrames;
         private readonly RenderScope mRenderScope;
+        private DateTime? mLastUpdate;
     }
 }
