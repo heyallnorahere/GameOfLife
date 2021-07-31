@@ -10,6 +10,7 @@ namespace GameOfLife
             Frontend = frontend;
             Board = new Board(this);
             FrameManager = new FrameManager();
+            Frontend.Renderer.RenderScope = FrameManager.RenderScope;
             Running = false;
         }
         public void Run()

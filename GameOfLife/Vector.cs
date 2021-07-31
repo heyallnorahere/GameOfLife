@@ -71,6 +71,34 @@ namespace GameOfLife
         {
             return !(v1 == v2);
         }
+        public static Vector operator+(Vector v1, Vector v2)
+        {
+            return (v1.X + v2.X, v1.Y + v2.Y);
+        }
+        public static Vector operator+(Vector v, int scalar)
+        {
+            return v + (scalar, scalar);
+        }
+        public static Vector operator-(Vector v)
+        {
+            return (-v.X, -v.Y);
+        }
+        public static Vector operator-(Vector v1, Vector v2)
+        {
+            return v1 + -v2;
+        }
+        public static Vector operator-(Vector v, int scalar)
+        {
+            return v + -scalar;
+        }
+        public static Vector operator*(Vector v, int scalar)
+        {
+            return (v.X * scalar, v.Y * scalar);
+        }
+        public static Vector operator/(Vector v, int scalar)
+        {
+            return (v.X / scalar, v.Y / scalar);
+        }
         private struct Enumerator : IEnumerator<int>
         {
             public int Current => mVector[mIndex];

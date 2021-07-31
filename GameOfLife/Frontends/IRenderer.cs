@@ -5,5 +5,6 @@
         void BeginRender();
         void EndRender();
         void RenderCell(Vector position);
+        RenderScope RenderScope { set; }
     }
 }

@@ -3,7 +3,45 @@ using GameOfLife.Frontends;
 
 namespace GameOfLife
 {
-    internal class FrameManager
+    public sealed class RenderScope
+    {
+        internal RenderScope()
+        {
+            mCenter = (0, 0);
+            mSize = (100, 30);
+        }
+        public void Update(IInputManager inputManager)
+        {
+            if (inputManager[Key.W].Down)
+            {
+                mCenter.Y++;
+            }
+            if (inputManager[Key.S].Down)
+            {
+                mCenter.Y--;
+            }
+            if (inputManager[Key.A].Down)
+            {
+                mCenter.X--;
+            }
+            if (inputManager[Key.D].Down)
+            {
+                mCenter.X++;
+            }
+            if (inputManager[Key.OemMinus].Down)
+            {
+                mSize += 2;
+            }
+            if (inputManager[Key.OemPlus].Down)
+            {
+                mSize -= 2;
+            }
+        }
+        public Vector Center => mCenter;
+        public Vector Size => mSize;
+        private Vector mCenter, mSize;
+    }
+    internal sealed class FrameManager
     {
         public FrameManager()
         {
@@ -11,6 +49,7 @@ namespace GameOfLife
             CurrentFrameIndex = 0;
             Paused = false;
             mFrames = new();
+            mRenderScope = new RenderScope();
         }
         public void AddFrame(HashSet<Vector> boardState)
         {
@@ -60,6 +99,7 @@ namespace GameOfLife
                     CurrentFrameIndex--;
                 }
             }
+            RenderScope.Update(inputManager);
         }
         public HashSet<Vector> GetCurrentFrame()
         {
@@ -68,6 +108,8 @@ namespace GameOfLife
         public int FPS { get; set; }
         public int CurrentFrameIndex { get; set; }
         public bool Paused { get; set; }
+        public RenderScope RenderScope => mRenderScope;
         private readonly List<HashSet<Vector>> mFrames;
+        private readonly RenderScope mRenderScope;
     }
 }

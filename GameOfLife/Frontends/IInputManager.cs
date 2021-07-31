@@ -9,7 +9,13 @@ namespace GameOfLife.Frontends
         LeftArrow,
         RightArrow,
         Spacebar,
-        Q
+        Q,
+        W,
+        A,
+        S,
+        D,
+        OemMinus,
+        OemPlus
     }
     [StructLayout(LayoutKind.Sequential)]
     public struct KeyState

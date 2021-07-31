@@ -72,7 +72,7 @@ namespace GameOfLife
         }
         internal void Update()
         {
-            var controller = new BoardController();
+            var controller = new BoardController(this);
             var (min, max) = GetDimensions();
             // this extends to a margin of 1 cell, to allow screen growth
             for (int x = min.X - 1; x < max.X + 1; x++)

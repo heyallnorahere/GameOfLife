@@ -3,11 +3,17 @@ using System.Collections.Generic;
 
 namespace GameOfLife.Frontends.Console
 {
-    internal class InputManager : IInputManager
+    internal sealed class InputManager : IInputManager
     {
         public InputManager()
         {
             mKeyStates = new();
+            foreach (var key in Enum.GetValues<Key>())
+            {
+                var keyState = new KeyState();
+                keyState.Reset();
+                mKeyStates[key] = keyState;
+            }
         }
         public KeyState this[Key key] => GetKey(key);
         public KeyState GetKey(Key key)
