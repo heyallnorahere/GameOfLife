@@ -37,7 +37,10 @@ namespace GameOfLife.Frontends.Console
                     int bufferIndex = (y * bufferWidth) + x;
                     buffer[bufferIndex] = ' ';
                 }
-                buffer[y * (bufferWidth - 1)] = '\n';
+                if (y > 0)
+                {
+                    buffer[(y * bufferWidth) - 1] = '\n';
+                }
             }
             foreach (Vector cell in mCells)
             {
