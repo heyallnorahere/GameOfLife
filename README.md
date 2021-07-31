@@ -4,11 +4,11 @@ This is my implementation of [Conway's Game of Life](https://en.wikipedia.org/wi
 
 ## Controls
 
-`Q`: quit
-Up arrow: increase framerate
-Down arrow: decrease framerate
-Left arrow: go back a frame
-Right arrow: go forward a frame
-Space bar: pause/resume
+- `Q`: quit
+- Up arrow: increase framerate
+- Down arrow: decrease framerate
+- Left arrow: go back a frame
+- Right arrow: go forward a frame
+- Space bar: pause/resume
 
 Please note that not all of these features are implemented yet.
