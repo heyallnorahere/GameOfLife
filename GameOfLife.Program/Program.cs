@@ -1,12 +1,14 @@
-﻿using System;
+﻿using GameOfLife.Frontends;
 
 namespace GameOfLife.Program
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            var game = new Game(Frontend.Create(FrontendType.Console));
+            // todo: load state
+            game.Run();
         }
     }
 }

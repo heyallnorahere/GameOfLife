@@ -5,7 +5,7 @@ namespace GameOfLife
 {
     public sealed class Game
     {
-        public Game(IFrontend frontend)
+        public Game(Frontend frontend)
         {
             Frontend = frontend;
             Board = new Board(this);
@@ -55,7 +55,7 @@ namespace GameOfLife
             Running = false;
         }
         public bool Running { get; private set; }
-        public IFrontend Frontend { get; private set; }
+        public Frontend Frontend { get; private set; }
         public Board Board { get; private set; }
         internal FrameManager FrameManager { get; private set; }
     }
