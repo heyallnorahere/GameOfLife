@@ -12,13 +12,20 @@ namespace GameOfLife
             Rules = new List<Rule>();
             BasicRules.RegisterRules(Rules);
         }
-        public void Load(HashSet<Vector> state)
+        public void Load(IEnumerable<Vector> state)
         {
             mCells.Clear();
             foreach (Vector cell in state)
             {
                 mCells.Add(cell);
             }
+        }
+        public void LoadConfig()
+        {
+            Rules.Clear();
+            BasicRules.RegisterRules(Rules);
+            Rules.AddRange(Config.AdditionalRules);
+            Load(Config.InitialState);
         }
         public (Vector min, Vector max) GetDimensions()
         {
@@ -59,7 +66,7 @@ namespace GameOfLife
             };
             foreach (var offset in offsets)
             {
-                if (mCells.Contains(offset))
+                if (mCells.Contains(cell + offset))
                 {
                     neighborCount++;
                 }

@@ -2,10 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using Newtonsoft.Json;
 
 namespace GameOfLife
 {
     [StructLayout(LayoutKind.Sequential)]
+    [JsonObject]
     public struct Vector : IEnumerable<int>, IEquatable<(int x, int y)>
     {
         public Vector(int x, int y)
