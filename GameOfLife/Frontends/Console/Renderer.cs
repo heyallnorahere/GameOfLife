@@ -58,11 +58,11 @@ namespace GameOfLife.Frontends.Console
                 return;
             }
             Vector convertedPosition = position - mRenderScope.Center;
-            if (Math.Abs(convertedPosition.X) > mRenderScope.Size.X)
+            if (Math.Abs(convertedPosition.X) >= mRenderScope.Size.X / 2)
             {
                 return;
             }
-            if (Math.Abs(convertedPosition.Y) > mRenderScope.Size.Y)
+            if (Math.Abs(convertedPosition.Y) >= mRenderScope.Size.Y / 2)
             {
                 return;
             }
