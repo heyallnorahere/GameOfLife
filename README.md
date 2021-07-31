@@ -37,11 +37,11 @@ To specify a starting position among other things, create a `config.json` file i
     ]
 }
 ```
-It's also possible to specify custom rules. To create a custom rule, create a .NET assembly with a public and static `GetDelegate()` function in a class, returning a `GameOfLife.GetRuleDelegate` delegate. Then, specify the assembly in your `config.json` file:
+It's also possible to create custom rules. To create a custom rule, create a .NET assembly with a public and static `GetDelegate()` function in a class, returning a `GameOfLife.GetRuleDelegate` delegate. Then, specify and entrypoint class the assembly in your `config.json` file:
 ```json
 {
     "InitialState": [
-        // specify some cell positions
+        ...
     ],
     "RulesetAssemblies": [
         {
