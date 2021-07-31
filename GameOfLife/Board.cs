@@ -104,7 +104,7 @@ namespace GameOfLife
         internal BoardController(Board board)
         {
             Board = board;
-            Cells = new HashSet<Vector>();
+            Cells = new HashSet<Vector>(board.Cells);
         }
         public bool AddCell(Vector cell)
         {

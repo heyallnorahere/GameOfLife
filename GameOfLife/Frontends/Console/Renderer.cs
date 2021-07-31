@@ -26,7 +26,7 @@ namespace GameOfLife.Frontends.Console
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
                 // for some reason this call is exclusive to windows
-                System.Console.SetWindowSize(scopeSize.X * 2, scopeSize.Y);
+                System.Console.SetWindowSize(scopeSize.X * 2, scopeSize.Y + 1);
             }
             int bufferWidth = scopeSize.X + 1;
             var buffer = new char[bufferWidth * scopeSize.Y];

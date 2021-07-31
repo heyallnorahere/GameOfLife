@@ -2,21 +2,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using Newtonsoft.Json;
 
 namespace GameOfLife
 {
     [StructLayout(LayoutKind.Sequential)]
-    [JsonObject]
-    public struct Vector : IEnumerable<int>, IEquatable<(int x, int y)>
+    public struct Vector : IEnumerable<int>, IEquatable<(int x, int y)>, ICollection<int>
     {
         public Vector(int x, int y)
         {
             X = x;
             Y = y;
+            mAddedCount = 0;
         }
         public int X { get; set; }
         public int Y { get; set; }
+        public int Count => 2;
+        public bool IsReadOnly => false;
         public int this[int index]
         {
             get
@@ -64,6 +65,49 @@ namespace GameOfLife
             return false;
         }
         public override int GetHashCode() => HashCode.Combine(X, Y);
+        public void Add(int item)
+        {
+            if (mAddedCount >= Count)
+            {
+                throw new IndexOutOfRangeException();
+            }
+            this[mAddedCount] = item;
+            mAddedCount++;
+        }
+        public void Clear()
+        {
+            this = (0, 0);
+        }
+        public bool Contains(int item)
+        {
+            foreach (int value in this)
+            {
+                if (item == value)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+        public void CopyTo(int[] array, int arrayIndex)
+        {
+            for (int i = arrayIndex; i < Count; i++)
+            {
+                array[i] = this[i];
+            }
+        }
+        public bool Remove(int item)
+        {
+            for (int i = 0; i < Count; i++)
+            {
+                if (this[i] == item)
+                {
+                    this[i] = 0;
+                    return true;
+                }
+            }
+            return false;
+        }
         public static implicit operator Vector((int x, int y) tuple) => new(tuple.x, tuple.y);
         public static bool operator==(Vector v1, Vector v2)
         {
@@ -101,6 +145,7 @@ namespace GameOfLife
         {
             return (v.X / scalar, v.Y / scalar);
         }
+        private int mAddedCount;
         private struct Enumerator : IEnumerator<int>
         {
             public int Current => mVector[mIndex];
