@@ -15,11 +15,11 @@ namespace GameOfLife
         {
             if (inputManager[Key.W])
             {
-                mCenter.Y++;
+                mCenter.Y--;
             }
             if (inputManager[Key.S])
             {
-                mCenter.Y--;
+                mCenter.Y++;
             }
             if (inputManager[Key.A])
             {
