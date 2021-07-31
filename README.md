@@ -1,4 +1,4 @@
-# Game of Life
+# Game of Life [![ci](https://img.shields.io/github/workflow/status/yodasoda1219/GameOfLife/ci?label=ci)](https://github.com/yodasoda1219/GameOfLife/actions/workflows/ci.yml)
 
 This is my implementation of [Conway's Game of Life](https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life).
 
