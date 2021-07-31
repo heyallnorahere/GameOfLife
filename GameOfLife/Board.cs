@@ -61,7 +61,7 @@ namespace GameOfLife
             var offsets = new List<Vector>
             {
                 (-1, -1), ( 0, -1), ( 1, -1),
-                (-1,  0), ( 0,  0), ( 1,  0),
+                (-1,  0),           ( 1,  0),
                 (-1,  1), ( 0,  1), ( 1,  1)
             };
             foreach (var offset in offsets)
