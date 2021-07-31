@@ -15,7 +15,7 @@ On Windows, open `GameOfLife.sln` in Visual Studio and hit `Ctrl+Shift+B` to bui
 - `A`: move screen left
 - `D`: move screen right
 - `-`: zoom out/enlarge console
-- `=`/`+`: zoom in/shrink console (i couldnt make the font smaller)
+- `=`/`+`: zoom in/shrink console (I couldn't make the font smaller)
 - Up arrow: increase framerate
 - Down arrow: decrease framerate
 - Left arrow: go back a frame
