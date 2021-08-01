@@ -6,7 +6,7 @@ namespace GameOfLife.Program
     {
         public static void Main(string[] args)
         {
-            var game = new Game(Frontend.Create(FrontendType.Console));
+            var game = new Game(Frontend.Create("Console"));
             Config.Load();
             game.Board.LoadConfig();
             game.Run();

@@ -2,7 +2,11 @@
 {
     internal sealed class ConsoleFrontend : Frontend
     {
-        public ConsoleFrontend()
+        public static void Register()
+        {
+            RegisterFrontend("Console", () => new ConsoleFrontend());
+        }
+        private ConsoleFrontend()
         {
             mInputManager = new InputManager();
             mRenderer = new Renderer();
