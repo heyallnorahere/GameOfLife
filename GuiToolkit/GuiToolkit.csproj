@@ -6,11 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\GuiToolkit\GuiToolkit.csproj" />
+    <PackageReference Include="Silk.NET" Version="2.6.0" />
   </ItemGroup>
 
 </Project>
