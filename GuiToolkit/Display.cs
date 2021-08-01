@@ -21,9 +21,14 @@ namespace GuiToolkit
             mWindow.Update += OnUpdate;
             mWindow.Render += OnRender;
         }
+        public void Run()
+        {
+            mWindow.Run();
+        }
         private void OnLoad()
         {
             InputManager = new InputManager(mWindow.CreateInput());
+            Load?.Invoke();
         }
         private void OnUpdate(double obj)
         {
@@ -36,6 +41,7 @@ namespace GuiToolkit
         }
         private readonly IWindow mWindow;
         public InputManager? InputManager { get; private set; }
+        public event Action? Load;
         public event Action<double>? Update;
         public event Action<double>? Render;
     }

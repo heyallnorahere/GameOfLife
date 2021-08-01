@@ -6,10 +6,13 @@ namespace GameOfLife.Program
     {
         public static void Main(string[] args)
         {
-            var game = new Game(Frontend.Create("Console"));
-            Config.Load();
-            game.Board.LoadConfig();
-            game.Run();
+            var frontend = Frontend.Create("GUI");
+            frontend.SetupGameInstance += (Game instance) =>
+            {
+                Config.Load();
+                instance.Board.LoadConfig();
+            };
+            frontend.Run();
         }
     }
 }

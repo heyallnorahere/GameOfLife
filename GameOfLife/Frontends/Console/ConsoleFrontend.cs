@@ -6,14 +6,14 @@
         {
             RegisterFrontend("Console", () => new ConsoleFrontend());
         }
-        private ConsoleFrontend()
+        private ConsoleFrontend() { }
+        public override void Run()
         {
-            mInputManager = new InputManager();
-            mRenderer = new Renderer();
+            IInputManager inputManager = new InputManager();
+            IRenderer renderer = new Renderer();
+            var game = new Game();
+            CallSetupGameInstance(game);
+            game.Run(inputManager, renderer);
         }
-        public override IInputManager InputManager => mInputManager;
-        public override IRenderer Renderer => mRenderer;
-        private readonly InputManager mInputManager;
-        private readonly Renderer mRenderer;
     }
 }

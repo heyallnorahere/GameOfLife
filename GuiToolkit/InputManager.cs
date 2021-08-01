@@ -55,6 +55,10 @@ namespace GuiToolkit
             mHEAD = HEAD;
             foreach (var key in Enum.GetValues<Key>())
             {
+                if (key == Key.Unknown)
+                {
+                    continue;
+                }
                 var keyState = mHEAD.KeyStates[key];
                 for (int i = 0; i < mInputContext.Keyboards.Count; i++)
                 {

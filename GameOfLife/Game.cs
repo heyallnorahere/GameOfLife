@@ -5,29 +5,30 @@ namespace GameOfLife
 {
     public sealed class Game
     {
-        public Game(Frontend frontend)
+        public Game()
         {
-            Frontend = frontend;
             Board = new Board(this);
             FrameManager = new FrameManager();
-            Frontend.Renderer.RenderScope = FrameManager.RenderScope;
             Running = false;
         }
-        public void Run()
+        public void Run(IInputManager inputManager, IRenderer renderer)
+        {
+            Prepare();
+            while (Running)
+            {
+                Update(inputManager);
+                Render(renderer);
+            }
+        }
+        public void Prepare()
         {
             // add the initial state
             FrameManager.AddFrame(Board.Cells);
             Running = true;
-            while (Running)
-            {
-                Update();
-                Render();
-            }
         }
-        private void Update()
+        public void Update(IInputManager inputManager)
         {
             FrameManager.NewFrame();
-            var inputManager = Frontend.InputManager;
             inputManager.Update();
             if (inputManager[Key.Q])
             {
@@ -41,10 +42,9 @@ namespace GameOfLife
             }
             FrameManager.Update(inputManager, boardState);
         }
-        private void Render()
+        public void Render(IRenderer renderer)
         {
             var cells = FrameManager.GetCurrentFrame();
-            var renderer = Frontend.Renderer;
             renderer.BeginRender();
             foreach (Vector cell in cells)
             {
@@ -57,7 +57,6 @@ namespace GameOfLife
             Running = false;
         }
         public bool Running { get; private set; }
-        public Frontend Frontend { get; private set; }
         public Board Board { get; private set; }
         internal FrameManager FrameManager { get; private set; }
     }

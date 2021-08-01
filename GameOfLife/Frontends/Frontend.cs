@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameOfLife.Frontends.Console;
+using GameOfLife.Frontends.Gui;
 
 namespace GameOfLife.Frontends
 {
@@ -48,15 +49,21 @@ namespace GameOfLife.Frontends
             return ID.ToLower().GetHashCode();
         }
     }
+    public delegate void SetupGameInstanceDelegate(Game instance);
     public abstract class Frontend
     {
         static Frontend()
         {
             RegisteredFrontends = new();
             ConsoleFrontend.Register();
+            GuiFrontend.Register();
         }
-        public abstract IRenderer Renderer { get; }
-        public abstract IInputManager InputManager { get; }
+        public event SetupGameInstanceDelegate? SetupGameInstance;
+        public abstract void Run();
+        protected void CallSetupGameInstance(Game instance)
+        {
+            SetupGameInstance?.Invoke(instance);
+        }
         public static Frontend Create(FrontendID frontendID)
         {
             var creationDelegate = RegisteredFrontends[frontendID];
