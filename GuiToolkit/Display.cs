@@ -11,11 +11,18 @@ namespace GuiToolkit
 {
     public sealed class Display
     {
-        public Display(string title, int width, int height)
+        public Display(string title, int width, int height, RendererAPI api = RendererAPI.OpenGL)
         {
-            var options = WindowOptions.DefaultVulkan; // we're gonna use this with vulkan
+            mAPI = api;
+            var options = mAPI switch
+            {
+                RendererAPI.OpenGL => WindowOptions.Default,
+                _ => throw new ArgumentException("The specified renderer API does not exist!")
+            };
             options.Size = new Vector2D<int>(width, height);
             options.Title = title;
+            options.VSync = false;
+            options.ShouldSwapAutomatically = true;
             mWindow = Window.Create(options);
             mWindow.Load += OnLoad;
             mWindow.Update += OnUpdate;
@@ -39,7 +46,8 @@ namespace GuiToolkit
         {
             Render?.Invoke(obj);
         }
-        private readonly IWindow mWindow;
+        internal readonly IWindow mWindow;
+        internal readonly RendererAPI mAPI;
         public InputManager? InputManager { get; private set; }
         public event Action? Load;
         public event Action<double>? Update;
