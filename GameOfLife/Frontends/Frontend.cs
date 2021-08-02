@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using GameOfLife.Frontends.Console;
-using GameOfLife.Frontends.Gui;
+using System.Reflection;
 
 namespace GameOfLife.Frontends
 {
@@ -55,8 +54,48 @@ namespace GameOfLife.Frontends
         static Frontend()
         {
             RegisteredFrontends = new();
-            ConsoleFrontend.Register();
-            GuiFrontend.Register();
+            var currentDomain = AppDomain.CurrentDomain;
+            var assemblies = currentDomain.GetAssemblies();
+            foreach (var assembly in assemblies)
+            {
+                var types = assembly.GetTypes();
+                foreach (var type in types)
+                {
+                    if (!IsDerived(typeof(Frontend), type))
+                    {
+                        continue;
+                    }
+                    var attributes = Attribute.GetCustomAttributes(type, typeof(FrontendAttribute));
+                    foreach (var attribute in attributes)
+                    {
+                        if (attribute is FrontendAttribute frontendAttribute)
+                        {
+                            RegisterFrontend(frontendAttribute.ID, () =>
+                            {
+                                ConstructorInfo? constructorInfo = type.GetConstructor(Array.Empty<Type>());
+                                if (constructorInfo != null)
+                                {
+                                    return (Frontend)constructorInfo.Invoke(Array.Empty<object>());
+                                }
+                                throw new ArgumentException($"Could not find suitable constructor for type: {type.FullName}");
+                            });
+                        }
+                    }
+                }
+            }
+        }
+        private static bool IsDerived(Type @base, Type derived)
+        {
+            Type? currentType = derived;
+            while (currentType != null)
+            {
+                currentType = currentType.BaseType;
+                if (currentType == @base)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
         public event SetupGameInstanceDelegate? SetupGameInstance;
         public abstract void Run();
@@ -69,11 +108,20 @@ namespace GameOfLife.Frontends
             var creationDelegate = RegisteredFrontends[frontendID];
             return creationDelegate();
         }
-        protected static void RegisterFrontend(FrontendID frontendID, CreateFrontendDelegate creationDelegate)
+        internal static void RegisterFrontend(FrontendID frontendID, CreateFrontendDelegate creationDelegate)
         {
             RegisteredFrontends.Add(frontendID, creationDelegate);
         }
-        protected delegate Frontend CreateFrontendDelegate();
+        internal delegate Frontend CreateFrontendDelegate();
         private static Dictionary<FrontendID, CreateFrontendDelegate> RegisteredFrontends { get; set; }
+    }
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    public sealed class FrontendAttribute : Attribute
+    {
+        public FrontendAttribute(string id)
+        {
+            ID = id;
+        }
+        internal string ID { get; private set; }
     }
 }

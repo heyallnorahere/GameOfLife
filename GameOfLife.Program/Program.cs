@@ -1,4 +1,5 @@
-﻿using GameOfLife.Frontends;
+﻿using System;
+using GameOfLife.Frontends;
 using CommandLine;
 
 namespace GameOfLife.Program

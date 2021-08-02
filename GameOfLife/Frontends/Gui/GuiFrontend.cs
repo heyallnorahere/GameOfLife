@@ -1,19 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using GuiToolkit;
 
 namespace GameOfLife.Frontends.Gui
 {
+    [Frontend("GUI")]
     internal sealed class GuiFrontend : Frontend
     {
-        public static void Register()
-        {
-            RegisterFrontend("GUI", () => new GuiFrontend());
-        }
-        private GuiFrontend() { }
+        public GuiFrontend() { }
         public override void Run()
         {
             mDisplay = new Display("Game of Life", 800, 600);

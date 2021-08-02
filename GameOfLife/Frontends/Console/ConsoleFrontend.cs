@@ -1,12 +1,9 @@
 ﻿namespace GameOfLife.Frontends.Console
 {
+    [Frontend("Console")]
     internal sealed class ConsoleFrontend : Frontend
     {
-        public static void Register()
-        {
-            RegisterFrontend("Console", () => new ConsoleFrontend());
-        }
-        private ConsoleFrontend() { }
+        public ConsoleFrontend() { }
         public override void Run()
         {
             IInputManager inputManager = new InputManager();
