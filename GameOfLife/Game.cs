@@ -44,6 +44,7 @@ namespace GameOfLife
         }
         public void Render(IRenderer renderer)
         {
+            renderer.RenderScope = FrameManager.RenderScope;
             var cells = FrameManager.GetCurrentFrame();
             renderer.BeginRender();
             foreach (Vector cell in cells)
