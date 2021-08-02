@@ -13,27 +13,27 @@ namespace GameOfLife
         }
         public void Update(IInputManager inputManager)
         {
-            if (inputManager[Key.W])
+            if (inputManager[InputAction.PanUp])
             {
                 mCenter.Y--;
             }
-            if (inputManager[Key.S])
+            if (inputManager[InputAction.PanDown])
             {
                 mCenter.Y++;
             }
-            if (inputManager[Key.A])
+            if (inputManager[InputAction.PanLeft])
             {
                 mCenter.X--;
             }
-            if (inputManager[Key.D])
+            if (inputManager[InputAction.PanRight])
             {
                 mCenter.X++;
             }
-            if (inputManager[Key.OemMinus])
+            if (inputManager[InputAction.ZoomOut])
             {
                 mSize += 2;
             }
-            if (inputManager[Key.OemPlus])
+            if (inputManager[InputAction.ZoomIn])
             {
                 mSize -= 2;
             }
@@ -83,15 +83,15 @@ namespace GameOfLife
             {
                 AddFrame(boardState);
             }
-            if (inputManager[Key.UpArrow])
+            if (inputManager[InputAction.FPSUp])
             {
                 FPS++;
             }
-            if (inputManager[Key.DownArrow] && FPS > 1)
+            if (inputManager[InputAction.FPSDown] && FPS > 1)
             {
                 FPS--;
             }
-            if (inputManager[Key.Spacebar])
+            if (inputManager[InputAction.Pause])
             {
                 Paused = !Paused;
                 if (!Paused)
@@ -99,7 +99,7 @@ namespace GameOfLife
                     CurrentFrameIndex = 0;
                 }
             }
-            if (inputManager[Key.LeftArrow])
+            if (inputManager[InputAction.PreviousFrame])
             {
                 if (!Paused)
                 {
@@ -110,7 +110,7 @@ namespace GameOfLife
                     CurrentFrameIndex++;
                 }
             }
-            if (inputManager[Key.RightArrow])
+            if (inputManager[InputAction.NextFrame])
             {
                 if (!Paused)
                 {

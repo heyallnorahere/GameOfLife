@@ -30,7 +30,7 @@ namespace GameOfLife
         {
             FrameManager.NewFrame();
             inputManager.Update();
-            if (inputManager[Key.Q])
+            if (inputManager[InputAction.Quit])
             {
                 Quit();
             }

@@ -5,14 +5,33 @@ namespace GameOfLife.Frontends.Console
 {
     internal sealed class InputManager : IInputManager
     {
+        static InputManager()
+        {
+            TranslationTable = new Dictionary<ConsoleKey, InputAction>
+            {
+                [ConsoleKey.Q] = InputAction.Quit,
+                [ConsoleKey.W] = InputAction.PanUp,
+                [ConsoleKey.S] = InputAction.PanDown,
+                [ConsoleKey.A] = InputAction.PanLeft,
+                [ConsoleKey.D] = InputAction.PanRight,
+                [ConsoleKey.OemMinus] = InputAction.ZoomOut,
+                [ConsoleKey.OemPlus] = InputAction.ZoomIn,
+                [ConsoleKey.UpArrow] = InputAction.FPSUp,
+                [ConsoleKey.DownArrow] = InputAction.FPSDown,
+                [ConsoleKey.LeftArrow] = InputAction.PreviousFrame,
+                [ConsoleKey.RightArrow] = InputAction.NextFrame,
+                [ConsoleKey.Spacebar] = InputAction.Pause
+            };
+        }
+        private static Dictionary<ConsoleKey, InputAction> TranslationTable { get; set; }
         public InputManager()
         {
             mKeyStates = new();
         }
-        public bool this[Key key] => GetKey(key);
-        public bool GetKey(Key key)
+        public bool this[InputAction action] => IsInputHeld(action);
+        public bool IsInputHeld(InputAction action)
         {
-            return mKeyStates[key];
+            return mKeyStates[action];
         }
         public void Update()
         {
@@ -23,31 +42,23 @@ namespace GameOfLife.Frontends.Console
                 keys.Add(keyInfo.Key);
             }
             mKeyStates = new();
-            foreach (var key in Enum.GetValues<Key>())
+            foreach (var action in Enum.GetValues<InputAction>())
             {
                 var state = false;
                 foreach (ConsoleKey consoleKey in keys)
                 {
-                    if (key == Convert(consoleKey))
+                    if (TranslationTable.ContainsKey(consoleKey))
                     {
-                        state = true;
-                        break;
+                        if (action == TranslationTable[consoleKey])
+                        {
+                            state = true;
+                            break;
+                        }
                     }
                 }
-                mKeyStates[key] = state;
+                mKeyStates[action] = state;
             }
         }
-        private static Key Convert(ConsoleKey consoleKey)
-        {
-            foreach (var key in Enum.GetValues<Key>())
-            {
-                if (key.ToString() == consoleKey.ToString())
-                {
-                    return key;
-                }
-            }
-            throw new InvalidCastException();
-        }
-        private Dictionary<Key, bool> mKeyStates;
+        private Dictionary<InputAction, bool> mKeyStates;
     }
 }

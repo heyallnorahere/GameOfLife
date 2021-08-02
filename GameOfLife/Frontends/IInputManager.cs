@@ -2,25 +2,25 @@
 
 namespace GameOfLife.Frontends
 {
-    public enum Key
+    public enum InputAction
     {
-        UpArrow,
-        DownArrow,
-        LeftArrow,
-        RightArrow,
-        Spacebar,
-        Q,
-        W,
-        A,
-        S,
-        D,
-        OemMinus,
-        OemPlus
+        FPSUp,
+        FPSDown,
+        PreviousFrame,
+        NextFrame,
+        Pause,
+        Quit,
+        PanUp,
+        PanLeft,
+        PanDown,
+        PanRight,
+        ZoomOut,
+        ZoomIn
     }
     public interface IInputManager
     {
-        bool GetKey(Key key);
-        bool this[Key key] { get; }
+        bool IsInputHeld(InputAction key);
+        bool this[InputAction key] { get; }
         void Update();
     }
 }
