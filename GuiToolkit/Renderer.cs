@@ -13,10 +13,17 @@ namespace GuiToolkit
         public List<VertexType> Vertices { get; set; }
         public List<uint>? Indices { get; set; }
     }
+    public interface IBuffer
+    {
+        void Bind();
+        void Unbind();
+        object ID { get; }
+        int ObjectCount { get; }
+    }
     public interface IAssembledObject
     {
-        object VAO { get; }
-        object? EBO { get; }
+        IBuffer VBO { get; }
+        IBuffer? EBO { get; }
     }
     public sealed class CommandList
     {
@@ -50,7 +57,7 @@ namespace GuiToolkit
     {
         public static Renderer Create(Display display)
         {
-            return display.mAPI switch
+            return display.RendererAPI switch
             {
                 RendererAPI.OpenGL => new OpenGLRenderer(display),
                 _ => throw new ArgumentException("Invalid renderer API!")
@@ -63,6 +70,7 @@ namespace GuiToolkit
         }
         public abstract IAssembledObject CreateBuffers<VertexType>(RenderedObject<VertexType> renderedObject) where VertexType : unmanaged;
         public abstract void DestroyBuffers(IAssembledObject assembledObject);
+        public abstract void ClearScreen();
         protected abstract void RenderObjects(List<IAssembledObject> assembledObjects);
     }
 }

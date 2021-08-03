@@ -19,6 +19,8 @@ namespace GameOfLife.Frontends.Gui
         {
             var guiToolkitInputManager = mDisplay?.InputManager;
             mInputManager = new InputManager(guiToolkitInputManager ?? throw new NullReferenceException());
+            var guiToolkitRenderer = GuiToolkit.Renderer.Create(mDisplay ?? throw new NullReferenceException());
+            mRenderer = new Renderer(guiToolkitRenderer);
             mInstance = new Game();
             CallSetupGameInstance(mInstance);
             mInstance.Prepare();

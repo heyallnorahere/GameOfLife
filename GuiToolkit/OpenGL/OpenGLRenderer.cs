@@ -8,21 +8,46 @@ namespace GuiToolkit.OpenGL
     {
         private struct AssembledObject : IAssembledObject
         {
-            public object VAO { get; set; }
-            public object? EBO { get; set; }
+            public IBuffer VBO => RealVBO;
+            public IBuffer? EBO => RealEBO;
+            public VertexBufferObject RealVBO { get; set; }
+            public ElementBufferObject? RealEBO { get; set; }
         }
         public OpenGLRenderer(Display display)
         {
             mDisplay = display;
-            mGLInterface = GL.GetApi(mDisplay.mWindow);
+            mGLInterface = GL.GetApi(mDisplay.NativeWindow);
+            mGLInterface.Enable(EnableCap.DepthTest);
         }
         public override IAssembledObject CreateBuffers<VertexType>(RenderedObject<VertexType> renderedObject)
         {
-            throw new NotImplementedException();
+            var assembledObject = new AssembledObject
+            {
+                RealVBO = new VertexBufferObject(mGLInterface)
+            };
+            assembledObject.RealVBO.SetData(renderedObject.Vertices);
+            if (renderedObject.Indices != null)
+            {
+                assembledObject.RealEBO = new ElementBufferObject(mGLInterface);
+                assembledObject.RealEBO.SetData(renderedObject.Indices);
+            }
+            return assembledObject;
         }
         public override void DestroyBuffers(IAssembledObject assembledObject)
         {
-            throw new NotImplementedException();
+            if (assembledObject is AssembledObject specificTypedObject)
+            {
+                specificTypedObject.RealVBO.Destroy();
+                specificTypedObject.RealEBO?.Destroy();
+            }
+            else
+            {
+                throw new ArgumentException("The provided AssembledObject does not contain OpenGL buffers!");
+            }
+        }
+        public override void ClearScreen()
+        {
+            mGLInterface.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
         }
         protected override void RenderObjects(List<IAssembledObject> assembledObjects)
         {

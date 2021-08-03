@@ -42,8 +42,10 @@ namespace GuiToolkit
         {
             Render?.Invoke(obj);
         }
-        internal readonly IWindow mWindow;
-        internal readonly RendererAPI mAPI;
+        private readonly IWindow mWindow;
+        private readonly RendererAPI mAPI;
+        internal IWindow NativeWindow => mWindow;
+        internal RendererAPI RendererAPI => mAPI;
         public InputManager? InputManager { get; private set; }
         public event Action? Load;
         public event Action<double>? Update;

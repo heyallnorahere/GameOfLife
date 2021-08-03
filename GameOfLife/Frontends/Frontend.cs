@@ -108,7 +108,7 @@ namespace GameOfLife.Frontends
             var creationDelegate = RegisteredFrontends[frontendID];
             return creationDelegate();
         }
-        internal static void RegisterFrontend(FrontendID frontendID, CreateFrontendDelegate creationDelegate)
+        private static void RegisterFrontend(FrontendID frontendID, CreateFrontendDelegate creationDelegate)
         {
             RegisteredFrontends.Add(frontendID, creationDelegate);
         }
