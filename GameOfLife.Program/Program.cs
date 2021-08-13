@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using GameOfLife.Frontends;
 using CommandLine;
 
@@ -6,19 +7,15 @@ namespace GameOfLife.Program
 {
     public class Program
     {
-        private struct Options
+        public class Options
         {
-            [Option('f', "frontend", Required = false, HelpText = "Change the frontend running this application")]
+            [Option('f', "frontend", HelpText = "Change the frontend running this application", Default = "Console")]
             public string? Frontend { get; set; }
-        }
-        static Program()
-        {
-            mFrontend = "Console";
         }
         public static void Main(string[] args)
         {
-            Parser.Default.ParseArguments<Options>(args).WithParsed(OnParsed);
-            var frontend = Frontend.Create(mFrontend);
+            Parser.Default.ParseArguments<Options>(args).WithParsed(OnParsed).WithNotParsed(OnError);
+            var frontend = Frontend.Create(mFrontend ?? throw new NullReferenceException());
             frontend.SetupGameInstance += (Game instance) =>
             {
                 Config.Load();
@@ -33,6 +30,10 @@ namespace GameOfLife.Program
                 mFrontend = options.Frontend;
             }
         }
-        private static string mFrontend;
+        private static void OnError(IEnumerable<Error> errors)
+        {
+            throw new NullReferenceException();
+        }
+        private static string? mFrontend;
     }
 }
