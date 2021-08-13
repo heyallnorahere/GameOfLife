@@ -10,11 +10,8 @@
             "request": "launch",
             "preLaunchTask": "build",
             "program": "${workspaceFolder}/GameOfLife.Program/bin/Debug/net5.0/GameOfLife.Program.dll",
-            "args": [
-                "--frontend",
-                "GUI"
-            ],
-            "cwd": "${workspaceFolder}/GameOfLife.Program",
+            "args": [],
+            "cwd": "${workspaceFolder}/GameOfLife.Program/bin/Debug/net5.0",
             "console": "externalTerminal",
             "stopAtEntry": false
         },
