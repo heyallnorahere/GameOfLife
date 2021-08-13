@@ -7,7 +7,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameOfLife", "GameOfLife\Ga
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameOfLife.Program", "GameOfLife.Program\GameOfLife.Program.csproj", "{96CDECE4-2FBA-4DAF-918C-BCCE0566E99B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuiToolkit", "GuiToolkit\GuiToolkit.csproj", "{9FEFA640-E55D-4C29-890E-CFDDD70D62A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
