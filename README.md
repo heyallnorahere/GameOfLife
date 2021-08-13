@@ -43,9 +43,10 @@ using GameOfLife;
 
 namespace MyRuleset
 {
-    [CustomRule("MyCustomRule")]
     public class MyCustomRuleContainerClass
     {
+        // the method must be static AND public
+        [CustomRule]
         public static MyCustomRule(BoardController controller, Vector cell)
         {
             // rule code goes here

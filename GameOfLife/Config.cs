@@ -43,22 +43,8 @@ namespace GameOfLife
             var assembly = Assembly.LoadFrom(rulesetAssemblyPath);
             if (assembly != null)
             {
-                foreach (Type type in assembly.GetTypes())
-                {
-                    CustomRuleAttribute? attribute = type.GetCustomAttribute<CustomRuleAttribute>();
-                    if (attribute != null)
-                    {
-                        MethodInfo? methodInfo = type.GetMethod(attribute.MethodName, BindingFlags.Static | BindingFlags.Public, null, new Type[] { typeof(BoardController), typeof(Vector) }, null);
-                        if (methodInfo == null)
-                        {
-                            throw new ArgumentException("The specified method does not exist!");
-                        }
-                        else
-                        {
-                            AdditionalRules.Add((Rule)Delegate.CreateDelegate(typeof(Rule), methodInfo));
-                        }
-                    }
-                }
+                var rules = CustomRuleAttribute.GetRulesFromAssembly(assembly);
+                AdditionalRules.AddRange(rules);
             }
         }
         public static List<Vector> InitialState { get; private set; }
