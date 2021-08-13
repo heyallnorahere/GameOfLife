@@ -37,17 +37,30 @@ To specify a starting position among other things, create a `config.json` file i
     ]
 }
 ```
-It's also possible to create custom rules. To create a custom rule, create a .NET assembly with a public and static `GetDelegate()` function in a class, returning a `GameOfLife.GetRuleDelegate` delegate. Then, specify and entrypoint class the assembly in your `config.json` file:
+It's also possible to create custom rules. To create a custom rule, create a .NET assembly linked against `GameOfLife.dll` with a class like so:
+```cs
+using GameOfLife;
+
+namespace MyRuleset
+{
+    [CustomRule("MyCustomRule")]
+    public class MyCustomRuleContainerClass
+    {
+        public static MyCustomRule(BoardController controller, Vector cell)
+        {
+            // rule code goes here
+        }
+    }
+}
+```
+Then, to apply your rule to the game, insert an entry into `RulesetAssemblies` like specified below:
 ```json
 {
     "InitialState": [
         ...
     ],
     "RulesetAssemblies": [
-        {
-            "AssemblyPath": "MyRuleset.dll",
-            "Entrypoint": "MyRuleset.Entrypoint"
-        }
+        "MyRuleset.dll"
     ]
 }
 ```

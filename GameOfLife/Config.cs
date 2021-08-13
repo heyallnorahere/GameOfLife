@@ -31,26 +31,33 @@ namespace GameOfLife
             if (configData.RulesetAssemblies != null)
             {
                 AdditionalRules.Clear();
-                foreach (RulesetAssembly assembly in configData.RulesetAssemblies)
+                foreach (string assemblyPath in configData.RulesetAssemblies)
                 {
-                    LoadAdditionalRules(assembly);
+                    LoadAdditionalRules(assemblyPath);
                 }
             }
         }
-        private static void LoadAdditionalRules(RulesetAssembly rulesetAssembly)
+        private static void LoadAdditionalRules(string rulesetAssemblyPath)
         {
-            if (!File.Exists(rulesetAssembly.AssemblyPath))
+            var assembly = Assembly.Load(rulesetAssemblyPath);
+            if (assembly != null)
             {
-                return;
-            }
-            var assembly = Assembly.Load(rulesetAssembly.AssemblyPath);
-            var entrypoint = assembly.GetType(rulesetAssembly.Entrypoint);
-            MethodInfo? method = entrypoint?.GetMethod("GetDelegate", BindingFlags.Static | BindingFlags.Public);
-            GetRuleDelegate? @delegate = (GetRuleDelegate?)method?.Invoke(null, null);
-            List<Rule>? rules = @delegate?.Invoke();
-            if (rules != null)
-            {
-                AdditionalRules.AddRange(rules);
+                foreach (Type type in assembly.GetTypes())
+                {
+                    CustomRuleAttribute? attribute = type.GetCustomAttribute<CustomRuleAttribute>();
+                    if (attribute != null)
+                    {
+                        MethodInfo? methodInfo = type.GetMethod(attribute.MethodName, BindingFlags.Static | BindingFlags.Public, null, new Type[] { typeof(BoardController), typeof(Vector) }, null);
+                        if (methodInfo == null)
+                        {
+                            throw new ArgumentException("The specified method does not exist!");
+                        }
+                        else
+                        {
+                            AdditionalRules.Add((Rule)Rule.CreateDelegate(type, methodInfo));
+                        }
+                    }
+                }
             }
         }
         public static List<Vector> InitialState { get; private set; }
@@ -61,13 +68,7 @@ namespace GameOfLife
             [JsonProperty(NullValueHandling = NullValueHandling.Include)]
             public List<Vector>? InitialState { get; set; }
             [JsonProperty(NullValueHandling = NullValueHandling.Include)]
-            public List<RulesetAssembly>? RulesetAssemblies { get; set; }
-        }
-        [JsonObject]
-        private struct RulesetAssembly
-        {
-            public string AssemblyPath { get; set; }
-            public string Entrypoint { get; set; }
+            public List<string>? RulesetAssemblies { get; set; }
         }
     }
 }
