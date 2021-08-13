@@ -28,18 +28,19 @@ namespace GameOfLife
             {
                 InitialState = configData.InitialState;
             }
+            string? dirName = Path.GetDirectoryName(file);
             if (configData.RulesetAssemblies != null)
             {
                 AdditionalRules.Clear();
                 foreach (string assemblyPath in configData.RulesetAssemblies)
                 {
-                    LoadAdditionalRules(assemblyPath);
+                    LoadAdditionalRules(Path.Join(dirName, assemblyPath));
                 }
             }
         }
         private static void LoadAdditionalRules(string rulesetAssemblyPath)
         {
-            var assembly = Assembly.Load(rulesetAssemblyPath);
+            var assembly = Assembly.LoadFrom(rulesetAssemblyPath);
             if (assembly != null)
             {
                 foreach (Type type in assembly.GetTypes())
@@ -54,7 +55,7 @@ namespace GameOfLife
                         }
                         else
                         {
-                            AdditionalRules.Add((Rule)Rule.CreateDelegate(type, methodInfo));
+                            AdditionalRules.Add((Rule)Delegate.CreateDelegate(typeof(Rule), methodInfo));
                         }
                     }
                 }
