@@ -23,7 +23,10 @@ namespace GameOfLife
         public void LoadConfig()
         {
             Rules.Clear();
-            BasicRules.RegisterRules(Rules);
+            if (!Config.RemoveDefaultRules)
+            {
+                BasicRules.RegisterRules(Rules);
+            }
             Rules.AddRange(Config.AdditionalRules);
             Load(Config.InitialState);
         }

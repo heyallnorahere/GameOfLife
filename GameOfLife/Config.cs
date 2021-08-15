@@ -41,14 +41,24 @@ namespace GameOfLife
         private static void LoadAdditionalRules(string rulesetAssemblyPath)
         {
             var assembly = Assembly.LoadFrom(rulesetAssemblyPath);
+            RemoveDefaultRules = false;
             if (assembly != null)
             {
+                var ruleAssemblyAttribute = assembly.GetCustomAttribute<RuleAssemblyAttribute>();
+                if (ruleAssemblyAttribute != null)
+                {
+                    if (!RemoveDefaultRules)
+                    {
+                        RemoveDefaultRules = ruleAssemblyAttribute.RemoveDefaultRules;
+                    }
+                }
                 var rules = CustomRuleAttribute.GetRulesFromAssembly(assembly);
                 AdditionalRules.AddRange(rules);
             }
         }
         public static List<Vector> InitialState { get; private set; }
         public static List<Rule> AdditionalRules { get; private set; }
+        public static bool RemoveDefaultRules { get; private set; } = false;
         [JsonObject]
         private struct ConfigData
         {

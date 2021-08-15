@@ -5,7 +5,7 @@ using System.Reflection;
 namespace GameOfLife
 {
     [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
-    public class CustomRuleAttribute : Attribute
+    public sealed class CustomRuleAttribute : Attribute
     {
         public CustomRuleAttribute() { }
         internal static List<Rule> GetRulesFromAssembly(Assembly assembly)
@@ -25,5 +25,11 @@ namespace GameOfLife
             }
             return rules;
         }
+    }
+    [AttributeUsage(AttributeTargets.Assembly, AllowMultiple = false)]
+    public sealed class RuleAssemblyAttribute : Attribute
+    {
+        public RuleAssemblyAttribute() { }
+        public bool RemoveDefaultRules { get; set; } = false;
     }
 }
