@@ -60,7 +60,7 @@ namespace GameOfLife
         public static List<Rule> AdditionalRules { get; private set; }
         public static bool RemoveDefaultRules { get; private set; } = false;
         [JsonObject]
-        private struct ConfigData
+        public struct ConfigData
         {
             [JsonProperty(NullValueHandling = NullValueHandling.Include)]
             public List<Vector>? InitialState { get; set; }
